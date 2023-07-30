@@ -1,0 +1,29 @@
+{
+  "name": "url-proxy",
+  "version": "0.1.0",
+  "description": "Sample project proxying urls",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "body-parser": "^1.19.0",
+    "node-fetch": "^2.6.12",
+    "sharp": "^0.32.3",
+    "apicache": "^1.6.3"
+  },
+  "engines": {
+    "node": "16.x"
+  },
+  "repository": {
+    "url": "https://glitch.com/edit/#!/yale-lowdb-crud-example"
+  },
+  "license": "MIT",
+  "keywords": [
+    "node",
+    "glitch",
+    "express"
+  ]
+}

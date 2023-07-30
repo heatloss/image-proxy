@@ -1,0 +1,39 @@
+<html>
+  <head>  
+    <script>
+    
+      window.onload = async () =>{
+        
+        const request = await fetch('/posts')
+        const posts = await request.json()
+        
+        console.log(posts)
+        const ul = document.querySelector("ul")
+        
+        posts.forEach((post)=>{
+          
+          const li = document.createElement("li")
+          const code = document.createElement("code")
+          
+          code.innerText = JSON.stringify(post)
+          
+          li.appendChild(code)
+          ul.appendChild(li)
+          
+        })
+        
+      
+      }
+    
+    </script>
+  </head>
+  <body>
+    <h1>
+       Events
+    </h1>
+    <ul>
+      
+    </ul>
+
+  </body>
+</html>
