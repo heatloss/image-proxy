@@ -12,7 +12,8 @@
     "body-parser": "^1.19.0",
     "node-fetch": "^2.6.12",
     "sharp": "^0.32.3",
-    "apicache": "^1.6.3"
+    "apicache": "^1.6.3",
+    "cors": "^2.8.5"
   },
   "engines": {
     "node": "16.x"
