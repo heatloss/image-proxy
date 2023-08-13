@@ -28,37 +28,42 @@ app.get('/', (req, res)=>{
 })
 
 app.get('/image/proxy', cache('60 minutes'), async (req, res)=>{
-  const url = req.query.url
-  let original = await fetch(url)
-  let original_buffer = Buffer.from(await original.arrayBuffer())
-  
-  let output
-  
-  if(req.query.x && req.query.y) {
-    output = await sharp(original_buffer)
-      .resize({
-        width: parseInt(req.query.x), 
-        height: parseInt(req.query.y),
-        withoutEnlargement: true
-      })
-      .webp({ smartSubsample: true })
-      .toBuffer()
-  } else if (req.query.x) {
-    output = await sharp(original_buffer)
-      .resize({
-        width: parseInt(req.query.x), 
-        height: undefined,
-        withoutEnlargement: true
-      })
-      .webp({ smartSubsample: true })
-      .toBuffer()
-  } else {
-    output = await sharp(original_buffer)
-      .webp({ smartSubsample: true, effort: 0 })
-      .toBuffer()
+  try {
+    const url = req.query.url
+    let original = await fetch(url)
+    let original_buffer = Buffer.from(await original.arrayBuffer())
+
+    let output
+
+    if(req.query.x && req.query.y) {
+      output = await sharp(original_buffer)
+        .resize({
+          width: parseInt(req.query.x), 
+          height: parseInt(req.query.y),
+          withoutEnlargement: true
+        })
+        .webp({ smartSubsample: true })
+        .toBuffer()
+    } else if (req.query.x) {
+      output = await sharp(original_buffer)
+        .resize({
+          width: parseInt(req.query.x), 
+          height: undefined,
+          withoutEnlargement: true
+        })
+        .webp({ smartSubsample: true })
+        .toBuffer()
+    } else {
+      output = await sharp(original_buffer)
+        .webp({ smartSubsample: true, effort: 0 })
+        .toBuffer()
+    }
+    res.setHeader('Content-Type', 'image/webp')
+    return res.end(output)
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({type:"Error fetching image", message:err.message})
   }
-  res.setHeader('Content-Type', 'image/webp')
-  return res.end(output)
 })
 
 app.get('/url', (req, res)=>{
@@ -67,9 +72,14 @@ app.get('/url', (req, res)=>{
 })
 
 app.get('/url/proxy', cors(), async (req, res)=>{
-  console.log(req.query.url)
-  const data = await fetch(req.query.url).then(r=>r.text())
-  res.end(data);
+  try {
+    console.log(req.query.url)
+    const data = await fetch(req.query.url).then(r=>r.text())
+    res.end(data);
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({type:"Error fetching url", message:err.message})
+  }
 })
 
 app.get('/demo', async (req, res)=>{
